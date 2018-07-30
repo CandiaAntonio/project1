@@ -5,20 +5,19 @@ library(lubridate)
 library(ggplot2)
 #Get Data
 ig_issuance <- read_excel("ig_issuance.xlsx")
-#Correct the Date column to the right month end format
+#Changing variables to have a tidy format
 ig_issuance_tidy <- ig_issuance %>%
-  mutate(Date = parse_date_time(Date, "ym")) %>%
-  mutate(year = year(Date), month = month(Date, label = T, abbr = T)) %>%
-  #Volume in Billions
+  #Date as.date format adding 2 days in order to use ceiling
+  mutate(Date = parse_date_time(Date, "ym") + days(2)) %>%
+  #New date variable in month end format
+  mutate(date = ceiling_date(Date, unit = "months") - days(1)) %>% 
+  mutate(year = year(date), month = month(date, label = T, abbr = T)) %>%
+  #Volume in USD Billions
   mutate(volume_u = ig_issuance$`Total Volume`/1000000000) %>%
-  mutate(volume = round(volume_u,2))
-#Get Summary Data
-ig_issuance_tidy %>% 
-group_by(year) %>%
-summarise(avg = sum(volume))
-glimpse(ig_issuance_tidy)
+  mutate(volume = round(volume_u,2)) %>% 
+  #Rename Total Deals
+  mutate(deals = ig_issuance$`Total Deals`)
+#Select the tidy variables
+ig <- ig_issuance_tidy %>% 
+  select(date, year, month, volume, deals)
 
-
-#Plot 
-ggplot(ig_issuance_tidy, aes(x = month, y= volume)) +
-  geom_bar(stat="identity")
