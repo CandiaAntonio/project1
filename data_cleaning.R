@@ -21,3 +21,18 @@ ig_issuance_tidy <- ig_issuance %>%
 ig <- ig_issuance_tidy %>% 
   select(date, year, month, volume, deals)
 
+#Plot 1 Box plot 1999-2018
+fill <- "#4271AE"
+line <- "#1F3552"
+ggplot(ig, aes(x = month, y = volume)) +
+  geom_boxplot(fill = fill, colour = line, alpha = 0.7, 
+               outlier.colour = "#1F3552", outlier.shape = 20,
+               outlier.size = 6) + 
+  scale_x_discrete(name = "Mes\n1999 - 2018") +
+  scale_y_continuous(name = "Total Emision IG\nen Billones de USD",
+                     breaks = seq(0,190,25),
+                     limits = c(25,190)) +
+  ggtitle("Boxplot emisión Corporativa Grado de Inversión") +
+  theme_bw()
+  
+
