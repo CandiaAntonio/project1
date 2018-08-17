@@ -21,7 +21,11 @@ ig_issuance_tidy <- ig_issuance %>%
 ig <- ig_issuance_tidy %>% 
   select(date, year, month, volume, deals)
 
+<<<<<<< HEAD
 #Plot 1 Box plot 1999-2018
+=======
+#Plot 1
+>>>>>>> 85171a3f3c06c3770771178feee4aa12d178a3d4
 fill <- "#4271AE"
 line <- "#1F3552"
 ggplot(ig, aes(x = month, y = volume)) +
